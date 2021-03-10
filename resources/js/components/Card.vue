@@ -113,6 +113,28 @@
 <script>
 import numerial from "numeral";
 
+numerial.register('locale', 'de', {
+    delimiters: {
+        thousands: '.',
+        decimal: ','
+    },
+    abbreviations: {
+        thousand: 'k',
+        million: 'm',
+        billion: 'b',
+        trillion: 't'
+    },
+    ordinal : function (number) {
+        return number === 1 ? 'er' : 'ème'; //this is taken from french example, don't know in german
+    },
+    currency: {
+        symbol: '€' //same as above
+    }
+});
+
+// switch between locales
+numerial.locale('de');
+
 export default {
   props: ["card"],
   data() {
