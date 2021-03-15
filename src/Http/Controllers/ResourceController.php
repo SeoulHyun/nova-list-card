@@ -8,6 +8,20 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ResourceController extends Controller
 {
+    private function title($card, $resouce)
+    {
+        if ($card->title) return call_user_func($card->title, $resouce);
+
+        return $resouce->title();
+    }
+
+    private function subtitle($card, $resource)
+    {
+        if ($card->subtitle) return call_user_func($card->subtitle, $resource);
+
+        return $resource->subtitle();
+    }
+
     public function index($key, $aggregate = 'count', $relationship = null, $column = null)
     {
         $novaRequest = resolve(NovaRequest::class);
@@ -31,19 +45,23 @@ class ResourceController extends Controller
             $query->take(request('limit'));
         }
 
-        $query = $resource::indexQuery($novaRequest, $query);
+        if ($card->query) {
+            $query = call_user_func($card->query, $novaRequest, $query);
+        } else {
+            $query = $resource::indexQuery($novaRequest, $query);
+        }
 
         return $query->get()
             ->mapInto($resource)
             ->filter(function ($resource) use ($novaRequest) {
                 return $resource->authorizedToView($novaRequest);
-            })->map(function ($resource) use ($novaRequest, $aggregate, $relationship) {
+            })->map(function ($resource) use ($novaRequest, $aggregate, $relationship, $card) {
                 return [
                     'resource' => $resource->resource->toArray(),
                     'resourceName' => $resource::uriKey(),
                     'resourceTitle' => $resource::label(),
-                    'title' => $resource->title(),
-                    'subTitle' => $resource->subtitle(),
+                    'title' => $this->title($card, $resource),
+                    'subTitle' => $this->subtitle($card, $resource),
                     'resourceId' => $resource->getKey(),
                     'url' => url(Nova::path().'/resources/'.$resource::uriKey().'/'.$resource->getKey()),
                     'avatar' => $resource->resolveAvatarUrl($novaRequest),

@@ -12,6 +12,12 @@ class ListCard extends Card
 
     public $resource;
 
+    public $query;
+
+    public $title;
+
+    public $subtitle;
+
     public $relationship;
 
     public $aggregate;
@@ -59,6 +65,27 @@ class ListCard extends Card
     {
         $this->resource = $resource;
         $this->classes($resource::uriKey());
+
+        return $this;
+    }
+
+    public function withQuery($query)
+    {
+        $this->query = $query;
+
+        return $this;
+    }
+
+    public function withTitle($func)
+    {
+        $this->title = $func;
+
+        return $this;
+    }
+
+    public function withSubtitle($func)
+    {
+        $this->subtitle = $func;
 
         return $this;
     }

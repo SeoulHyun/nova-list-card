@@ -58,7 +58,7 @@
                   class="pb-2"
                   v-if="card.subtitle_column"
                 >{{ item.resource[card.subtitle_column] }}</span>
-                <span class="pb-2" v-else-if="item.subTitle">{{ item.subTitle }}</span>
+                <span class="pb-2" v-else-if="item.subTitle" v-html="item.subTitle">{{ item.subTitle }}</span>
               </p>
               <p
                 class="text-80 nova-list-card-timestamp"

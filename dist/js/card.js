@@ -2060,9 +2060,16 @@ var render = function() {
                                           )
                                         ])
                                       : item.subTitle
-                                      ? _c("span", { staticClass: "pb-2" }, [
-                                          _vm._v(_vm._s(item.subTitle))
-                                        ])
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticClass: "pb-2",
+                                            domProps: {
+                                              innerHTML: _vm._s(item.subTitle)
+                                            }
+                                          },
+                                          [_vm._v(_vm._s(item.subTitle))]
+                                        )
                                       : _vm._e()
                                   ]
                                 )
