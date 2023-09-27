@@ -169,7 +169,7 @@ class ListCard extends Card
         return $this;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge([
             'limit' => $this->limit,
